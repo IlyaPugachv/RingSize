@@ -1,7 +1,9 @@
 import UIKit
 
 class RingVC: UIViewController {
+    
     private var circleLayer: CAShapeLayer?
+    
     private let infoCircle: UIImageView = {
         let imageView = UIImageView()
         let configuration = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular)
@@ -64,12 +66,19 @@ class RingVC: UIViewController {
         return button
     }()
     
+    private let radiusCircle: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         setupVStack()
         createCircle(radius: 40)
-        
     }
     
     private func setup() {
@@ -80,6 +89,7 @@ class RingVC: UIViewController {
         view.addSubview(slider)
         view.addSubview(plusBtn)
         view.addSubview(minusBtn)
+        view.addSubview(radiusCircle)
         
         slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
         
@@ -106,6 +116,11 @@ class RingVC: UIViewController {
         NSLayoutConstraint.activate([
             slider.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 350),
             slider.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 65),
+        ])
+        
+        NSLayoutConstraint.activate([
+            radiusCircle.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 235),
+            radiusCircle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 193),
         ])
     }
     
@@ -159,10 +174,12 @@ class RingVC: UIViewController {
         let ratio = (currentValue - minValue) / range
         
         let minRadius: CGFloat = 40
-        
         let maxRadius: CGFloat = 80
-        
         let radius = min(maxRadius, max(minRadius, minRadius + ratio * (maxRadius - minRadius)))
+        
+        let radiusLabel = radiusCircle
+        let roundedRadius = String(format: "%.2f", slider.value)
+            radiusLabel.text = "\(roundedRadius) \nmm"
         
         removeCircle()
         createCircle(radius: radius)
