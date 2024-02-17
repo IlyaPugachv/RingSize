@@ -56,15 +56,47 @@
 		BC6544A52B80D7A500A8EE7F /* RingSizeApp */ = {
 			isa = PBXGroup;
 			children = (
-				BC6544A62B80D7A500A8EE7F /* AppDelegate.swift */,
-				BC6544A82B80D7A500A8EE7F /* SceneDelegate.swift */,
-				BC6544AA2B80D7A500A8EE7F /* ViewController.swift */,
-				BC6544AC2B80D7A500A8EE7F /* Main.storyboard */,
-				BC6544AF2B80D7A800A8EE7F /* Assets.xcassets */,
-				BC6544B12B80D7A800A8EE7F /* LaunchScreen.storyboard */,
+				BC6544BC2B80D7F100A8EE7F /* Model */,
+				BC6544BB2B80D7E400A8EE7F /* View */,
+				BC6544BD2B80D7F800A8EE7F /* Controller */,
+				BC6544BA2B80D7D600A8EE7F /* Delegate */,
 				BC6544B42B80D7A800A8EE7F /* Info.plist */,
 			);
 			path = RingSizeApp;
+			sourceTree = "<group>";
+		};
+		BC6544BA2B80D7D600A8EE7F /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				BC6544A62B80D7A500A8EE7F /* AppDelegate.swift */,
+				BC6544A82B80D7A500A8EE7F /* SceneDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		BC6544BB2B80D7E400A8EE7F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BC6544AC2B80D7A500A8EE7F /* Main.storyboard */,
+				BC6544B12B80D7A800A8EE7F /* LaunchScreen.storyboard */,
+				BC6544AF2B80D7A800A8EE7F /* Assets.xcassets */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BC6544BC2B80D7F100A8EE7F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BC6544BD2B80D7F800A8EE7F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BC6544AA2B80D7A500A8EE7F /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
