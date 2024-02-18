@@ -19,6 +19,7 @@
 		BC6544C52B80D9B700A8EE7F /* ArticlesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C42B80D9B700A8EE7F /* ArticlesVC.swift */; };
 		BC6544C72B80D9C000A8EE7F /* ResultsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C62B80D9C000A8EE7F /* ResultsVC.swift */; };
 		BC6544CA2B82015200A8EE7F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C92B82015200A8EE7F /* Extension.swift */; };
+		BC6544CD2B823ECE00A8EE7F /* PopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544CC2B823ECE00A8EE7F /* PopUpVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		BC6544C42B80D9B700A8EE7F /* ArticlesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesVC.swift; sourceTree = "<group>"; };
 		BC6544C62B80D9C000A8EE7F /* ResultsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsVC.swift; sourceTree = "<group>"; };
 		BC6544C92B82015200A8EE7F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		BC6544CC2B823ECE00A8EE7F /* PopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		BC6544BD2B80D7F800A8EE7F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BC6544CB2B823EAA00A8EE7F /* PopUpVC */,
 				BC6544AA2B80D7A500A8EE7F /* HomeVC.swift */,
 				BC6544BE2B80D98300A8EE7F /* TabBarVC.swift */,
 				BC6544C02B80D99C00A8EE7F /* RingVC.swift */,
@@ -123,6 +126,14 @@
 				BC6544C92B82015200A8EE7F /* Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		BC6544CB2B823EAA00A8EE7F /* PopUpVC */ = {
+			isa = PBXGroup;
+			children = (
+				BC6544CC2B823ECE00A8EE7F /* PopUpVC.swift */,
+			);
+			path = PopUpVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +214,7 @@
 				BC6544A72B80D7A500A8EE7F /* AppDelegate.swift in Sources */,
 				BC6544C12B80D99C00A8EE7F /* RingVC.swift in Sources */,
 				BC6544C72B80D9C000A8EE7F /* ResultsVC.swift in Sources */,
+				BC6544CD2B823ECE00A8EE7F /* PopUpVC.swift in Sources */,
 				BC6544BF2B80D98300A8EE7F /* TabBarVC.swift in Sources */,
 				BC6544A92B80D7A500A8EE7F /* SceneDelegate.swift in Sources */,
 			);

@@ -96,6 +96,7 @@ final class RingVC: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 18
         button.backgroundColor = UIColor.brown.withAlphaComponent(0.3)
+        button.addTarget(self, action: #selector(openUnits), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -241,6 +242,13 @@ final class RingVC: UIViewController {
         radiusLabel.text = "\(roundedRadius) \nmm"
     }
     
+    func presentPopupMenu() {
+        let popupMenuVC = PopUpVC()
+        popupMenuVC.modalTransitionStyle = .coverVertical
+        present(popupMenuVC, animated: true, completion: nil)
+    }
+
+    
     @objc private func sliderValueChanged(_ sender: UISlider) {
         let minValue: CGFloat = 12.04
         let maxValue: CGFloat = 23.42
@@ -256,6 +264,10 @@ final class RingVC: UIViewController {
         removeCircle()
         createCircle(radius: radius)
         roundedRadius(value: radius)
+    }
+    
+    @objc func openUnits() {
+        presentPopupMenu()
     }
 }
 
