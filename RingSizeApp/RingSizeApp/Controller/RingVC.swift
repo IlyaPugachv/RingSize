@@ -3,6 +3,8 @@ import UIKit
 final class RingVC: UIViewController {
     
     private var circleLayer: CAShapeLayer?
+    var bottomView: UIView!
+    var overlayView: UIView?
     
     //MARK: - LAZY CLOSURE
     
@@ -43,7 +45,7 @@ final class RingVC: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     lazy var slider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = 12.04
@@ -115,7 +117,6 @@ final class RingVC: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,8 +138,9 @@ final class RingVC: UIViewController {
     private func setupSubviews() {
         let subviews = [unitsBtn, ringSize, textLabel, infoCircle, gearCircle, imageView, slider, plusBtn, minusBtn, sizeCircle, unitsBtn, defineRingBtn]
         subviews.forEach { view.addSubview($0) }
-      
+        
         createCircle(radius: 40)
+        buttomView()
     }
     
     private func setupConstraint() {
@@ -242,12 +244,11 @@ final class RingVC: UIViewController {
         radiusLabel.text = "\(roundedRadius) \nmm"
     }
     
-    func presentPopupMenu() {
-        let popupMenuVC = PopUpVC()
-        popupMenuVC.modalTransitionStyle = .coverVertical
-        present(popupMenuVC, animated: true, completion: nil)
+    private func buttomView() {
+        bottomView = UIView(frame: CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: 200))
+        bottomView.backgroundColor = UIColor.lightGray
+        view.addSubview(bottomView)
     }
-
     
     @objc private func sliderValueChanged(_ sender: UISlider) {
         let minValue: CGFloat = 12.04
@@ -266,8 +267,49 @@ final class RingVC: UIViewController {
         roundedRadius(value: radius)
     }
     
+    var isBottomViewVisible = false
+
     @objc func openUnits() {
-        presentPopupMenu()
+        // Удалите все существующие подвью из bottomView
+        bottomView.subviews.forEach { $0.removeFromSuperview() }
+
+        let targetY = self.view.frame.height / 2 - self.bottomView.frame.height / 2
+        let targetHeight = self.view.frame.height / 2
+
+        // Анимация отображения bottomView
+        UIView.animate(withDuration: 0.5, animations: {
+            // Устанавливаем новые координаты и размеры для bottomView
+            self.bottomView.frame.origin.y = targetY
+            self.bottomView.frame.size.height = targetHeight
+            // Устанавливаем белый цвет для фона bottomView
+            self.bottomView.backgroundColor = .black
+            
+            // Создаем кнопку "Done"
+            let dismissButton = UIButton(frame: CGRect(x: self.bottomView.frame.width - 70, y: 20, width: 50, height: 50))
+            dismissButton.setTitle("Done", for: .normal)
+            dismissButton.setTitleColor(UIColor.orange, for: .normal)
+            // Устанавливаем меньший размер шрифта для кнопки
+            dismissButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            // Добавляем обработчик нажатия на кнопку
+            dismissButton.addTarget(self, action: #selector(self.dismissBottomView), for: .touchUpInside)
+            
+            // Добавляем кнопку на bottomView
+            self.bottomView.addSubview(dismissButton)
+            
+            // Устанавливаем флаг, что bottomView отображается
+            self.isBottomViewVisible = true
+        })
     }
+
+
+    @objc func dismissBottomView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.bottomView.frame.origin.y = self.view.frame.height
+            self.bottomView.frame.size.height = 0 
+        }) { _ in
+            self.isBottomViewVisible = false
+        }
+    }
+
 }
 
