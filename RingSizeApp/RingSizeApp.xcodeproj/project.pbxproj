@@ -18,6 +18,7 @@
 		BC6544C32B80D9AA00A8EE7F /* RulerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C22B80D9AA00A8EE7F /* RulerVC.swift */; };
 		BC6544C52B80D9B700A8EE7F /* ArticlesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C42B80D9B700A8EE7F /* ArticlesVC.swift */; };
 		BC6544C72B80D9C000A8EE7F /* ResultsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C62B80D9C000A8EE7F /* ResultsVC.swift */; };
+		BC6544CA2B82015200A8EE7F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6544C92B82015200A8EE7F /* Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		BC6544C22B80D9AA00A8EE7F /* RulerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerVC.swift; sourceTree = "<group>"; };
 		BC6544C42B80D9B700A8EE7F /* ArticlesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesVC.swift; sourceTree = "<group>"; };
 		BC6544C62B80D9C000A8EE7F /* ResultsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsVC.swift; sourceTree = "<group>"; };
+		BC6544C92B82015200A8EE7F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		BC6544A52B80D7A500A8EE7F /* RingSizeApp */ = {
 			isa = PBXGroup;
 			children = (
+				BC6544C82B82012800A8EE7F /* Extension */,
 				BC6544BC2B80D7F100A8EE7F /* Model */,
 				BC6544BB2B80D7E400A8EE7F /* View */,
 				BC6544BD2B80D7F800A8EE7F /* Controller */,
@@ -112,6 +115,14 @@
 				BC6544C62B80D9C000A8EE7F /* ResultsVC.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		BC6544C82B82012800A8EE7F /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BC6544C92B82015200A8EE7F /* Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC6544CA2B82015200A8EE7F /* Extension.swift in Sources */,
 				BC6544AB2B80D7A500A8EE7F /* HomeVC.swift in Sources */,
 				BC6544C52B80D9B700A8EE7F /* ArticlesVC.swift in Sources */,
 				BC6544C32B80D9AA00A8EE7F /* RulerVC.swift in Sources */,
@@ -352,6 +364,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -380,6 +393,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.7;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
