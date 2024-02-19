@@ -3,8 +3,8 @@ import UIKit
 final class RingVC: UIViewController {
     
     private var circleLayer: CAShapeLayer?
-    var bottomView: UIView!
-    var overlayView: UIView?
+    private var bottomView: UIView!
+    private var isBottomViewVisible = false
     
     //MARK: - LAZY CLOSURE
     
@@ -13,6 +13,7 @@ final class RingVC: UIViewController {
         button.setImage(UIImage(systemName: "info.circle"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = .black
+        button.addTarget(self, action: #selector(openInfo), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -42,6 +43,7 @@ final class RingVC: UIViewController {
         button.setImage(UIImage(systemName: "gearshape"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.tintColor = .black
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -59,6 +61,7 @@ final class RingVC: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(increaseSlider), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -67,6 +70,7 @@ final class RingVC: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "minus"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(decreaseSlider), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -84,10 +88,7 @@ final class RingVC: UIViewController {
         let image = UIView()
         image.backgroundColor = UIColor.systemYellow.withAlphaComponent(0.3)
         image.layer.cornerRadius = 18
-        image.layer.shadowColor = UIColor.black.cgColor
-        image.layer.shadowOpacity = 0.3
-        image.layer.shadowOffset = CGSize(width: 2, height: 2)
-        image.layer.shadowRadius = 4
+        applyShadow(to: image)
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
@@ -109,19 +110,25 @@ final class RingVC: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 25
         button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOpacity = 0.3
-        button.layer.shadowOffset = CGSize(width: 2, height: 2)
-        button.layer.shadowRadius = 4
         button.backgroundColor = UIColor.systemOrange
+        applyShadow(to: button)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    private let unitStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        slider.value = 17.73
+        setupGestures()
         sliderValueChanged(slider)
     }
     
@@ -133,14 +140,49 @@ final class RingVC: UIViewController {
         setupGestureSlider()
         vsStackSliderValue()
         vsStackRingSize()
+        slider.value = 17.73
     }
     
     private func setupSubviews() {
-        let subviews = [unitsBtn, ringSize, textLabel, infoCircle, gearCircle, imageView, slider, plusBtn, minusBtn, sizeCircle, unitsBtn, defineRingBtn]
+        let subviews = [ringSize, textLabel, infoCircle, gearCircle, imageView, slider, plusBtn, minusBtn, sizeCircle, unitsBtn, defineRingBtn]
         subviews.forEach { view.addSubview($0) }
         
         createCircle(radius: 40)
         buttomView()
+    }
+    
+    private func setupUnitStackView() {
+        let unitStackView = UIStackView()
+        unitStackView.axis = .vertical
+        unitStackView.alignment = .center
+        unitStackView.spacing = 25
+        unitStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let unitsLabel = UILabel()
+        unitsLabel.text = "Units"
+        unitsLabel.font = .systemFont(ofSize: 20, weight: .medium)
+        unitsLabel.textColor = .black
+        unitsLabel.textAlignment = .center
+        unitStackView.addArrangedSubview(unitsLabel)
+        
+        let units = ["AU/GB", "EU/ISO", "US/CA", "JP/CN", "RU"]
+        
+        for unit in units {
+            let unitLabel = UILabel()
+            unitLabel.text = unit
+            unitLabel.textColor = .black
+            unitLabel.font = UIFont.systemFont(ofSize: 14)
+            unitStackView.addArrangedSubview(unitLabel)
+        }
+        
+        bottomView.addSubview(unitStackView)
+        
+        NSLayoutConstraint.activate([
+            unitStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 30),
+            unitStackView.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 75),
+            unitStackView.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -75),
+            unitStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomView.bottomAnchor, constant: -20)
+        ])
     }
     
     private func setupConstraint() {
@@ -151,7 +193,7 @@ final class RingVC: UIViewController {
         
         NSLayoutConstraint.activate([
             sizeCircle.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 145),
-            sizeCircle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 194),
+            sizeCircle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 193),
         ])
         
         NSLayoutConstraint.activate([
@@ -233,6 +275,29 @@ final class RingVC: UIViewController {
         circleLayer = segmentLayer
     }
     
+    private func setupGestures() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissBottomView))
+        view.addGestureRecognizer(tapGesture)
+        
+        let doneButtonGesture = UITapGestureRecognizer(target: self, action: #selector(dismissBottomView))
+        doneButtonGesture.numberOfTapsRequired = 1
+        bottomView.addGestureRecognizer(doneButtonGesture)
+    }
+    
+    private func applyShadow(to view: UIView) {
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.3
+        view.layer.shadowOffset = CGSize(width: 2, height: 2)
+        view.layer.shadowRadius = 4
+    }
+    
+    private func adjustSliderValue(by value: CGFloat) {
+        let currentValue = CGFloat(slider.value)
+        let newValue = currentValue + value
+        slider.value = Float(newValue)
+        sliderValueChanged(slider)
+    }
+    
     private func removeCircle() {
         guard let circleLayer = circleLayer else { return }
         circleLayer.removeFromSuperlayer()
@@ -248,6 +313,18 @@ final class RingVC: UIViewController {
         bottomView = UIView(frame: CGRect(x: 0, y: view.frame.height, width: view.frame.width, height: 200))
         bottomView.backgroundColor = UIColor.lightGray
         view.addSubview(bottomView)
+    }
+    
+    // MARK: - @objc
+    
+    @objc private func openSettings() {
+        let vc = Settings()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func openInfo() {
+        let vc = InfoVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func sliderValueChanged(_ sender: UISlider) {
@@ -267,49 +344,55 @@ final class RingVC: UIViewController {
         roundedRadius(value: radius)
     }
     
-    var isBottomViewVisible = false
-
-    @objc func openUnits() {
-        // Удалите все существующие подвью из bottomView
+    @objc private func increaseSlider(_ sender: UIButton) {
+        adjustSliderValue(by: 0.20)
+    }
+    
+    @objc private func decreaseSlider(_ sender: UIButton) {
+        adjustSliderValue(by: -0.20)
+    }
+    
+    @objc private func openUnits() {
         bottomView.subviews.forEach { $0.removeFromSuperview() }
-
-        let targetY = self.view.frame.height / 2 - self.bottomView.frame.height / 2
-        let targetHeight = self.view.frame.height / 2
-
-        // Анимация отображения bottomView
+        
+        let targetY = self.view.frame.height / 2 + 50
+        let targetHeight = self.view.frame.height / 2 - 50
+        
+        let dimmingView = UIView(frame: self.view.bounds)
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.view.addSubview(dimmingView)
+        self.view.bringSubviewToFront(bottomView)
+        
         UIView.animate(withDuration: 0.5, animations: {
-            // Устанавливаем новые координаты и размеры для bottomView
             self.bottomView.frame.origin.y = targetY
             self.bottomView.frame.size.height = targetHeight
-            // Устанавливаем белый цвет для фона bottomView
-            self.bottomView.backgroundColor = .black
+            self.bottomView.backgroundColor = .white
+            self.bottomView.layer.cornerRadius = 25
             
-            // Создаем кнопку "Done"
             let dismissButton = UIButton(frame: CGRect(x: self.bottomView.frame.width - 70, y: 20, width: 50, height: 50))
             dismissButton.setTitle("Done", for: .normal)
             dismissButton.setTitleColor(UIColor.orange, for: .normal)
-            // Устанавливаем меньший размер шрифта для кнопки
             dismissButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            // Добавляем обработчик нажатия на кнопку
+            
             dismissButton.addTarget(self, action: #selector(self.dismissBottomView), for: .touchUpInside)
             
-            // Добавляем кнопку на bottomView
             self.bottomView.addSubview(dismissButton)
-            
-            // Устанавливаем флаг, что bottomView отображается
-            self.isBottomViewVisible = true
+            self.setupUnitStackView()
         })
     }
-
-
-    @objc func dismissBottomView() {
+    
+    @objc private func dismissBottomView() {
         UIView.animate(withDuration: 0.5, animations: {
             self.bottomView.frame.origin.y = self.view.frame.height
-            self.bottomView.frame.size.height = 0 
+            self.bottomView.frame.size.height = 0
         }) { _ in
             self.isBottomViewVisible = false
+            self.view.subviews.forEach {
+                if $0.backgroundColor == UIColor.black.withAlphaComponent(0.5) {
+                    $0.removeFromSuperview()
+                }
+            }
+            self.unitStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         }
     }
-
 }
-
